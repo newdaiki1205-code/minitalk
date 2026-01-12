@@ -12,28 +12,7 @@
 
 #include "minitalk.h"
 
-int	ft_atoi(const char *nptr)
-{
-	int	res;
-	int	sign;
-
-	res = 0;
-	sign = 1;
-	while (*nptr == 32 || (*nptr >= 9 && *nptr <= 13))
-		nptr++;
-	if (*nptr == '+' || *nptr == '-')
-	{
-		if (*nptr == '-')
-			sign *= -1;
-		nptr++;
-	}
-	while (*nptr >= '0' && *nptr <= '9')
-	{
-		res = res * 10 + (*nptr - '0');
-		nptr++;
-	}
-	return (res * sign);
-}
+int g_switch;
 
 int	bit_op(unsigned char uc, int count)
 {
@@ -43,14 +22,17 @@ int	bit_op(unsigned char uc, int count)
 		return (-1);
 	a = uc & (128 >> count);
 	a = a >> (7 - count);
-	return (a);
+	if(a == 1)
+		return SIGUSR1;
+	else
+		return SIGUSR2;
 }
 
 void	send_signal(char *str, pid_t pid)
 {
 	int	i;
 	int	j;
-	int	bit;
+	int sig;
 
 	i = 0;
 	while (str[i])
@@ -58,12 +40,15 @@ void	send_signal(char *str, pid_t pid)
 		j = 0;
 		while (j < 8)
 		{
-			bit = bit_op(str[i], j);
-			if (bit == 1)
-				kill(pid, SIGUSR1);
-			else
-				kill(pid, SIGUSR2);
-			usleep(100000);
+			g_switch = 0;
+			sig = bit_op(str[i], j);
+			if(kill(pid, sig) == -1)
+			{
+				ft_printf("Signal Error\n");
+				exit(1);
+			}
+			while (g_switch == 0)
+				pause();
 			j++;
 		}
 		i++;
@@ -77,8 +62,10 @@ void	finish_signal(pid_t pid)
 	i = 0;
 	while (i < 8)
 	{
+		g_switch = 0;
 		kill(pid, SIGUSR2);
-		usleep(100000);
+		while(g_switch == 0)
+			pause();
 		i++;
 	}
 }
@@ -90,6 +77,7 @@ void	handler(int signum)
 		ft_printf("I got your message!");
 		exit(0);
 	}
+	g_switch = 1;
 }
 
 int	main(int ac, char **av)

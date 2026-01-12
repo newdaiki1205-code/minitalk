@@ -12,29 +12,6 @@
 
 #include "minitalk.h"
 
-int	ft_atoi(const char *nptr)
-{
-	int	res;
-	int	sign;
-
-	res = 0;
-	sign = 1;
-	while (*nptr == 32 || (*nptr >= 9 && *nptr <= 13))
-		nptr++;
-	if (*nptr == '+' || *nptr == '-')
-	{
-		if (*nptr == '-')
-			sign *= -1;
-		nptr++;
-	}
-	while (*nptr >= '0' && *nptr <= '9')
-	{
-		res = res * 10 + (*nptr - '0');
-		nptr++;
-	}
-	return (res * sign);
-}
-
 int	bit_op(unsigned char uc, int count)
 {
 	unsigned char	a;
@@ -43,14 +20,16 @@ int	bit_op(unsigned char uc, int count)
 		return (-1);
 	a = uc & (128 >> count);
 	a = a >> (7 - count);
-	return (a);
+	if(a == 1)
+		return SIGUSR1;
+	else
+		return SIGUSR2;
 }
 
 void	send_signal(char *str, pid_t pid)
 {
 	int	i;
 	int	j;
-	int	bit;
 	int sig;
 
 	i = 0;
@@ -59,16 +38,12 @@ void	send_signal(char *str, pid_t pid)
 		j = 0;
 		while (j < 8)
 		{
-			bit = bit_op(str[i], j);
-			if (bit == 1)
-				sig = SIGUSR1;
-			else
-				sig = SIGUSR2;
+			sig = bit_op(str[i], j);
 			if(kill(pid, sig) == -1)
-				{
-					ft_printf("Signal Error\n");
-					exit(1);
-				}
+			{
+				ft_printf("Signal Error\n");
+				exit(1);
+			}
 			j++;
 			usleep(100);
 		}
@@ -83,6 +58,11 @@ int	main(int ac, char **av)
 	if (ac != 3)
 		return (1);
 	pid = ft_atoi(av[1]);
+	if (pid < 1)
+	{
+		ft_printf("Error: PID should be a positive integer\n");
+		return (1);
+	}
 	send_signal(av[2], pid);
 	return (0);
 }

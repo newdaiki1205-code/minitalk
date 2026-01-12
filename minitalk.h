@@ -21,4 +21,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 
+int	ft_atoi(const char *nptr);
+
 #endif

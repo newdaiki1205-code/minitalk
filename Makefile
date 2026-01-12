@@ -1,25 +1,25 @@
-SRC_S = server.c \
+SRC_S = server.c ft_atoi.c \
 	./printf/ft_printf.c \
 	./printf/ft_putnbr_base.c \
 	./printf/ft_putstr_fd.c \
 	./printf/ft_specifier.c \
 	./printf/print.c \
 
-SRC_C = client.c \
+SRC_C = client.c ft_atoi.c\
 	./printf/ft_printf.c \
 	./printf/ft_putnbr_base.c \
 	./printf/ft_putstr_fd.c \
 	./printf/ft_specifier.c \
 	./printf/print.c \
 
-SRC_SB = server_bonus.c \
+SRC_SB = server_bonus.c ft_atoi.c\
 	./printf/ft_printf.c \
 	./printf/ft_putnbr_base.c \
 	./printf/ft_putstr_fd.c \
 	./printf/ft_specifier.c \
 	./printf/print.c \
 
-SRC_CB = client_bonus.c \
+SRC_CB = client_bonus.c ft_atoi.c\
 	./printf/ft_printf.c \
 	./printf/ft_putnbr_base.c \
 	./printf/ft_putstr_fd.c \
