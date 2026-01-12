@@ -1,7 +1,4 @@
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+#include "minitalk.h"
 
 
 int	ft_atoi(const char *nptr)
@@ -27,7 +24,7 @@ int	ft_atoi(const char *nptr)
 	return (res * sign);
 }
 
-int test_bit(unsigned char uc, int count)
+int bit_op(unsigned char uc, int count)
 {
     unsigned char a;
 
@@ -38,35 +35,38 @@ int test_bit(unsigned char uc, int count)
     return a;
 }
 
-
-int main(int ac, char **av)
+void send_signal(char *str, pid_t pid)
 {
-    int i;
-    int j;
-    int bit;
-    __pid_t pid;
-    
-    if(ac != 3)
-      return 1;
-    pid = ft_atoi(av[1]);
-    //printf("%d\n", pid);
-    i = 0;
-    while(av[2][i])
+  int i;
+  int j;
+  int bit;
+  
+  i = 0;
+  while(str[i])
     {
       j = 0;
       while(j < 8)
       {
-        bit = test_bit(av[2][i], j);
+        bit = bit_op(str[i], j);
         if(bit == 1)
-          //printf("%d", bit);
           kill(pid, SIGUSR1);
         else
-          //printf("%d", bit);
           kill(pid, SIGUSR2);
         j++;
+        usleep(100);
       }
-      //printf("\n");  
       i++;
     }
+}
+
+int main(int ac, char **av)
+{
+    pid_t pid;
+    
+    if(ac != 3)
+      return 1;
+    pid = ft_atoi(av[1]);
+    send_signal(av[2], pid);
     return 0;
 }
+

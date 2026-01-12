@@ -11,26 +11,26 @@
 /* ************************************************************************** */
 
 #include "minitalk.h"
-#include <stdio.h>
 
-void handler(int signum)
+int i;
+ 
+static void handler(int signum)
 {
-    static char a;
-    static int i;
 
-    a = 0;
-    i = 0;
+    static char a;
+
+    if(i == 0)
+        a = 0;    
+    a = a << 1;
+    if(signum == SIGUSR1)
+        a = a + 1;
+    i++;
     if(i > 7)
     {
         ft_printf("%c", a);
         i = 0;
     }
-    a = a << 1;
-    if(signum == 1)
-        a = a + 1;
-    i++;
 }
-
 
 int main(void)
 {
@@ -39,11 +39,13 @@ int main(void)
     sa.sa_handler = handler;
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = 0;
+
+    ft_printf("PID: %i\n", getpid());
     sigaction(SIGUSR1, &sa, NULL);
     sigaction(SIGUSR2, &sa, NULL);
-    
-    ft_printf("PID: %i", getpid());
+    i = 0;
     while(1)
+    {
         pause();
-
+    }
 }
