@@ -1,24 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_putchar_fd.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dshirais <dshirais@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/08 15:38:29 by dshirais          #+#    #+#             */
-/*   Updated: 2026/01/12 16:26:00 by dshirais         ###   ########.fr       */
+/*   Created: 2025/10/03 11:57:13 by dshirais          #+#    #+#             */
+/*   Updated: 2025/10/13 14:52:33 by dshirais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "libft.h"
 
-# define _DEFAULT_SOURCE
-# define _POSIX_C_SOURCE 200809L
+void	ft_putchar_fd(char c, int fd)
+{
+	write(fd, &c, 1);
+}
+//#include <stdio.h>
+// int	main(void)
+// {
+// 	int fd;
+// 	char c = 'a';
 
-# include "ft_printf.h"
-# include <signal.h>
-# include <stdlib.h>
-# include <unistd.h>
-
-#endif
+// 	fd = open("test.txt", O_RDWR | O_TRUNC | O_CREAT, 0700);
+// 	if (fd == -1)
+// 		return (1);
+// 	printf("fd = %d\n", fd);
+// 	ft_putchar_fd(c, fd);
+// 	close(fd);
+// 	ft_putchar_fd('\0', 1);
+// 	return (0);
+// }

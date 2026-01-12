@@ -1,24 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dshirais <dshirais@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/08 15:38:29 by dshirais          #+#    #+#             */
-/*   Updated: 2026/01/12 16:26:00 by dshirais         ###   ########.fr       */
+/*   Created: 2025/10/08 13:08:09 by dshirais          #+#    #+#             */
+/*   Updated: 2025/10/09 19:36:49 by dshirais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+#include "libft.h"
 
-# define _DEFAULT_SOURCE
-# define _POSIX_C_SOURCE 200809L
+void	ft_lstdelone(t_list *lst, void (*del)(void *))
+{
+	if (lst && del)
+	{
+		del(lst->content);
+		free(lst);
+	}
+}
+// #include "libft.h"
+// #include <stdio.h>
+// #include <stdlib.h>
 
-# include "ft_printf.h"
-# include <signal.h>
-# include <stdlib.h>
-# include <unistd.h>
+// void del(void *content)
+// {
+//     printf("Deleting: %s\n", (char *)content);
+// }
 
-#endif
+// int main(void)
+// {
+//     t_list *node = ft_lstnew("DeleteMe");
+//     ft_lstdelone(node, del);
+//     return 0;
+// }

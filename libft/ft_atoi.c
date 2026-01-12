@@ -1,16 +1,14 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dshirais <dshirais@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/12 14:55:27 by dshirais          #+#    #+#             */
-/*   Updated: 2026/01/12 19:37:36 by dshirais         ###   ########.fr       */
+/*   Created: 2025/09/30 16:55:31 by dshirais          #+#    #+#             */
+/*   Updated: 2025/10/09 18:27:42 by dshirais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "minitalk.h"
 
 int	ft_atoi(const char *nptr)
 {
@@ -35,54 +33,25 @@ int	ft_atoi(const char *nptr)
 	return (res * sign);
 }
 
-int	bit_op(unsigned char uc, int count)
-{
-	unsigned char	a;
+// #include <stdio.h>
+// #include <stdlib.h>
 
-	if (count == 8)
-		return (-1);
-	a = uc & (128 >> count);
-	a = a >> (7 - count);
-	return (a);
-}
+// int	main(void)
+// {
+// 	char	*str;
+// 	int		std_res;
+// 	int		ft_res;
 
-void	send_signal(char *str, pid_t pid)
-{
-	int	i;
-	int	j;
-	int	bit;
-	int sig;
+// 	str = "-2147483648";
+// 	std_res = atoi(str);
+// 	ft_res = ft_atoi(str);
+// 	printf("%d\n", std_res);
+// 	printf("%d\n", ft_res);
+// 	return (0);
+// }
 
-	i = 0;
-	while (str[i])
-	{
-		j = 0;
-		while (j < 8)
-		{
-			bit = bit_op(str[i], j);
-			if (bit == 1)
-				sig = SIGUSR1;
-			else
-				sig = SIGUSR2;
-			if(kill(pid, sig) == -1)
-				{
-					ft_printf("Signal Error\n");
-					exit(1);
-				}
-			j++;
-			usleep(100);
-		}
-		i++;
-	}
-}
-
-int	main(int ac, char **av)
-{
-	pid_t	pid;
-
-	if (ac != 3)
-		return (1);
-	pid = ft_atoi(av[1]);
-	send_signal(av[2], pid);
-	return (0);
-}
+// int i = 0;
+// while (nptr[i])
+// 	i++;
+// if (i > 11)
+// 	return (0);

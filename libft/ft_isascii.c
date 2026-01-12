@@ -1,24 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minitalk.h                                         :+:      :+:    :+:   */
+/*   ft_isascii.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dshirais <dshirais@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/08 15:38:29 by dshirais          #+#    #+#             */
-/*   Updated: 2026/01/12 16:26:00 by dshirais         ###   ########.fr       */
+/*   Created: 2025/09/29 12:13:22 by dshirais          #+#    #+#             */
+/*   Updated: 2025/10/09 19:57:53 by dshirais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINITALK_H
-# define MINITALK_H
+int	ft_isascii(int c)
+{
+	if (c >= 0 && c <= 127)
+		return (1);
+	return (0);
+}
+// #include <stdio.h>
+// #include <ctype.h>
+// #include "libft.h"
 
-# define _DEFAULT_SOURCE
-# define _POSIX_C_SOURCE 200809L
-
-# include "ft_printf.h"
-# include <signal.h>
-# include <stdlib.h>
-# include <unistd.h>
-
-#endif
+// int main(void)
+// {
+// 	printf("ft_isascii(65) = %d | isascii(65) = %d\n", ft_isascii(65),
+//		isascii(65));
+// 	printf("ft_isascii(128) = %d | isascii(128) = %d\n", ft_isascii(128),
+//		isascii(128));
+// 	return (0);
+// }
