@@ -6,16 +6,27 @@
 /*   By: dshirais <dshirais@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 16:15:44 by dshirais          #+#    #+#             */
-/*   Updated: 2026/01/12 19:08:24 by dshirais         ###   ########.fr       */
+/*   Updated: 2026/01/13 18:40:41 by dshirais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static void	act(int signum, siginfo_t *info, void *context)
+char	g_buf[10700000000];
+
+void	print_and_clear(char *buf, int pos)
+{
+	buf[pos] = '\n';
+	buf[pos + 1] = '\0';
+	ft_printf("%s", buf);
+	ft_bzero(buf, pos);
+}
+
+void	act(int signum, siginfo_t *info, void *context)
 {
 	static char	a;
 	static int	count;
+	static int	pos;
 
 	(void)context;
 	a = a << 1;
@@ -26,11 +37,15 @@ static void	act(int signum, siginfo_t *info, void *context)
 	{
 		if (a == '\0')
 		{
+			print_and_clear(g_buf, pos);
+			pos = 0;
 			kill(info->si_pid, SIGUSR2);
-			ft_printf("\n");
 		}
 		else
-			ft_printf("%c", a);
+		{
+			g_buf[pos] = a;
+			pos++;
+		}
 		count = 0;
 	}
 	kill(info->si_pid, SIGUSR1);

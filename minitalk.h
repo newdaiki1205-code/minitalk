@@ -6,7 +6,7 @@
 /*   By: dshirais <dshirais@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/08 15:38:29 by dshirais          #+#    #+#             */
-/*   Updated: 2026/01/12 16:26:00 by dshirais         ###   ########.fr       */
+/*   Updated: 2026/01/13 12:10:59 by dshirais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-int	ft_atoi(const char *nptr);
+int		ft_atoi(const char *nptr);
+void	ft_bzero(void *s, int n);
 
 #endif

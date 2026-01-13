@@ -6,13 +6,13 @@
 /*   By: dshirais <dshirais@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 16:15:28 by dshirais          #+#    #+#             */
-/*   Updated: 2026/01/12 19:31:15 by dshirais         ###   ########.fr       */
+/*   Updated: 2026/01/13 10:48:45 by dshirais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-int g_switch;
+int		g_switch;
 
 int	bit_op(unsigned char uc, int count)
 {
@@ -22,17 +22,17 @@ int	bit_op(unsigned char uc, int count)
 		return (-1);
 	a = uc & (128 >> count);
 	a = a >> (7 - count);
-	if(a == 1)
-		return SIGUSR1;
+	if (a == 1)
+		return (SIGUSR1);
 	else
-		return SIGUSR2;
+		return (SIGUSR2);
 }
 
 void	send_signal(char *str, pid_t pid)
 {
 	int	i;
 	int	j;
-	int sig;
+	int	sig;
 
 	i = 0;
 	while (str[i])
@@ -42,7 +42,7 @@ void	send_signal(char *str, pid_t pid)
 		{
 			g_switch = 0;
 			sig = bit_op(str[i], j);
-			if(kill(pid, sig) == -1)
+			if (kill(pid, sig) == -1)
 			{
 				ft_printf("Signal Error\n");
 				exit(1);
@@ -64,7 +64,7 @@ void	finish_signal(pid_t pid)
 	{
 		g_switch = 0;
 		kill(pid, SIGUSR2);
-		while(g_switch == 0)
+		while (g_switch == 0)
 			pause();
 		i++;
 	}
@@ -86,7 +86,7 @@ int	main(int ac, char **av)
 	struct sigaction	sa;
 
 	if (ac != 3)
-		return (1);
+		return (ft_printf("Error: Give PID and a string\n"), 1);
 	sa.sa_handler = handler;
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;

@@ -1,25 +1,28 @@
-SRC_S = server.c ft_atoi.c \
+NAME = server
+NAME2 = client
+
+SRC_S = server.c helper.c \
 	./printf/ft_printf.c \
 	./printf/ft_putnbr_base.c \
 	./printf/ft_putstr_fd.c \
 	./printf/ft_specifier.c \
 	./printf/print.c \
 
-SRC_C = client.c ft_atoi.c\
+SRC_C = client.c helper.c\
 	./printf/ft_printf.c \
 	./printf/ft_putnbr_base.c \
 	./printf/ft_putstr_fd.c \
 	./printf/ft_specifier.c \
 	./printf/print.c \
 
-SRC_SB = server_bonus.c ft_atoi.c\
+SRC_SB = server_bonus.c helper.c\
 	./printf/ft_printf.c \
 	./printf/ft_putnbr_base.c \
 	./printf/ft_putstr_fd.c \
 	./printf/ft_specifier.c \
 	./printf/print.c \
 
-SRC_CB = client_bonus.c ft_atoi.c\
+SRC_CB = client_bonus.c helper.c\
 	./printf/ft_printf.c \
 	./printf/ft_putnbr_base.c \
 	./printf/ft_putstr_fd.c \
@@ -37,13 +40,13 @@ FLAG = -Wall -Werror -Wextra -g
 
 PRTF = -I./printf
 
-all: server client
+all: $(NAME) $(NAME2)
 
-server: $(OBJ_S)
-	$(CC) $(FLAG) $(OBJ_S) -o server
+$(NAME): $(OBJ_S)
+	$(CC) $(FLAG) $(OBJ_S) -o $(NAME)
 
-client: $(OBJ_C)
-	$(CC) $(FLAG) $(OBJ_C) -o client
+$(NAME2): $(OBJ_C)
+	$(CC) $(FLAG) $(OBJ_C) -o $(NAME2)
 
 %.o: %.c
 	$(CC) $(FLAG) $(PRTF) -c $< -o $@
@@ -60,7 +63,7 @@ clean:
 	rm -f $(OBJ_S) $(OBJ_C) $(OBJ_SB) $(OBJ_CB)
 
 fclean: clean
-	rm -f server client server_bonus client_bonus
+	rm -f $(NAME) $(NAME2) server_bonus client_bonus
 
 re: fclean all
 

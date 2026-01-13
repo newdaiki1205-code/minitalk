@@ -1,43 +1,50 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dshirais <dshirais@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/29 13:25:57 by dshirais          #+#    #+#             */
-/*   Updated: 2025/10/09 18:50:55 by dshirais         ###   ########.fr       */
+/*   Created: 2026/01/13 10:49:00 by dshirais          #+#    #+#             */
+/*   Updated: 2026/01/13 13:13:32 by dshirais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minitalk.h"
 
-void	*ft_memset(void *s, int c, size_t n)
+int	ft_atoi(const char *nptr)
 {
-	size_t			i;
+	int	res;
+	int	sign;
+
+	res = 0;
+	sign = 1;
+	while (*nptr == 32 || (*nptr >= 9 && *nptr <= 13))
+		nptr++;
+	if (*nptr == '+' || *nptr == '-')
+	{
+		if (*nptr == '-')
+			sign *= -1;
+		nptr++;
+	}
+	while (*nptr >= '0' && *nptr <= '9')
+	{
+		res = res * 10 + (*nptr - '0');
+		nptr++;
+	}
+	return (res * sign);
+}
+
+void	ft_bzero(void *s, int n)
+{
+	int				i;
 	unsigned char	*p;
 
-	i = 0;
 	p = (unsigned char *)s;
+	i = 0;
 	while (i < n)
 	{
-		p[i] = (unsigned char)c;
+		p[i] = '\0';
 		i++;
 	}
-	return (s);
 }
-// #include <stdio.h>
-// #include <string.h>
-// #include "libft.h"
-
-// int main(void)
-// {
-// 	char buf1[10] = "";
-// 	char buf2[10] = "";
-
-// 	ft_memset(buf1, '\0', 5);
-// 	memset(buf2, '\0', 5);
-
-// 	printf("ft_memset: %s | memset: %s\n", buf1, buf2);
-// 	return 0;
-// }

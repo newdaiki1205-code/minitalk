@@ -6,11 +6,13 @@
 /*   By: dshirais <dshirais@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/12 14:55:27 by dshirais          #+#    #+#             */
-/*   Updated: 2026/01/12 19:37:36 by dshirais         ###   ########.fr       */
+/*   Updated: 2026/01/13 18:22:08 by dshirais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+
+int		g_switch;
 
 int	bit_op(unsigned char uc, int count)
 {
@@ -20,17 +22,17 @@ int	bit_op(unsigned char uc, int count)
 		return (-1);
 	a = uc & (128 >> count);
 	a = a >> (7 - count);
-	if(a == 1)
-		return SIGUSR1;
+	if (a == 1)
+		return (SIGUSR1);
 	else
-		return SIGUSR2;
+		return (SIGUSR2);
 }
 
 void	send_signal(char *str, pid_t pid)
 {
 	int	i;
 	int	j;
-	int sig;
+	int	sig;
 
 	i = 0;
 	while (str[i])
@@ -38,25 +40,58 @@ void	send_signal(char *str, pid_t pid)
 		j = 0;
 		while (j < 8)
 		{
+			g_switch = 0;
 			sig = bit_op(str[i], j);
-			if(kill(pid, sig) == -1)
+			if (kill(pid, sig) == -1)
 			{
 				ft_printf("Signal Error\n");
 				exit(1);
 			}
+			while (g_switch == 0)
+				pause();
 			j++;
-			usleep(100);
 		}
 		i++;
 	}
 }
 
+void	finish_signal(pid_t pid)
+{
+	int	i;
+
+	i = 0;
+	while (i < 8)
+	{
+		g_switch = 0;
+		kill(pid, SIGUSR2);
+		while (g_switch == 0)
+			pause();
+		i++;
+	}
+}
+
+void	handler(int signum)
+{
+	if (signum == SIGUSR2)
+	{
+		ft_printf("I got your message!");
+		exit(0);
+	}
+	g_switch = 1;
+}
+
 int	main(int ac, char **av)
 {
-	pid_t	pid;
+	pid_t				pid;
+	struct sigaction	sa;
 
 	if (ac != 3)
-		return (1);
+		return (ft_printf("Error: Give PID and a string\n"), 1);
+	sa.sa_handler = handler;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sigaction(SIGUSR1, &sa, NULL);
+	sigaction(SIGUSR2, &sa, NULL);
 	pid = ft_atoi(av[1]);
 	if (pid < 1)
 	{
@@ -64,5 +99,6 @@ int	main(int ac, char **av)
 		return (1);
 	}
 	send_signal(av[2], pid);
+	finish_signal(pid);
 	return (0);
 }
